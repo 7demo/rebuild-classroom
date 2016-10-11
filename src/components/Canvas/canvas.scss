@@ -1,0 +1,27 @@
+.canvas-wrap{
+	position: relative;
+	width: 700px;
+	height: 500px;
+	background: #fff;
+	.canvas{
+		display: none;
+		position: relative;
+		width: 100%;
+		height: 100%;
+		canvas{
+			position: absolute;
+			left: 0;
+			height: 0;
+			width: 100%;
+			height: 100%;
+		}
+		.canvas-shadow-1{
+			z-index: 9;
+		}
+	}
+	.canvas.active{
+		display: block;
+	}
+	
+
+}
