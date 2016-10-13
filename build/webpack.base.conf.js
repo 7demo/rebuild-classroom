@@ -5,6 +5,8 @@ var projectRoot = path.resolve(__dirname, '../')
 
 module.exports = {
   entry: {
+    vendor : ['vue', 'vuex'],
+    // fabric : ['fabric'],
     app: './src/main.js'
   },
   output: {
@@ -16,10 +18,11 @@ module.exports = {
     extensions: ['', '.js', '.vue'],
     fallback: [path.join(__dirname, '../node_modules')],
     alias: {
-      'vue': 'vue/dist/vue.common.js',
+      'vue': 'vue/dist/vue.js',
       'src': path.resolve(__dirname, '../src'),
       'assets': path.resolve(__dirname, '../src/assets'),
-      'components': path.resolve(__dirname, '../src/components')
+      'components': path.resolve(__dirname, '../src/components'),
+      'pomeloModule' : '../lib/pomelo/build/build.js'
     }
   },
   resolveLoader: {
@@ -35,7 +38,7 @@ module.exports = {
         test: /\.js$/,
         loader: 'babel',
         include: projectRoot,
-        exclude: /node_modules/
+        exclude: [/node_modules/, /lib/]
       },
       {
         test: /\.json$/,

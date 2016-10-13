@@ -9,6 +9,9 @@
  */
 export const domToCanvas = (self) => {
 	
+	if (!(self.$el instanceof HTMLElement)) return [];
+
+	if (!self.$el || !self.$el.children || self.$el.children.length === 0) return;
 	let canvasDomArray = self.$el.children[0].children;
 	let canvasArray = [];
 	canvasDomArray = Array.prototype.slice.call(canvasDomArray);
@@ -36,12 +39,12 @@ export const shadowFreeDraw = (data) => {
 	_canvas.fillStyle = 'black';
 	_canvas.lineCap = "round";
 	_canvas.lineJoin = "round";
-	_canvas.lineWidth = 2;
+	_canvas.lineWidth = 1.5;
 	_canvas.strokeStyle = 'black';
-	_canvas.clearRect(0, 0, 700,500);
+	_canvas.clearRect(0, 0, 1000,500);
 	_canvas.beginPath();
 	if (_data.length < 3) {
-		_canvas.arc(_data[0][0], _data[0][1], 2, 0, Math.PI * 2, !0);
+		_canvas.arc(_data[0][0], _data[0][1], 1, 0, Math.PI * 2, !0);
 		_canvas.fill();
 		_canvas.closePath();
 	} else {
