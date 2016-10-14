@@ -2,8 +2,10 @@
 	<div id='canvasWrap' class="canvas-wrap" :value='shadowDraw' v-on:mousedown='startDraw' v-on:mousemove='runDraw' v-on:mouseup='finishDraw'>
 		
 		<div class='canvas' v-for="page in canvas.total"  v-bind:class='{active:page === canvas.index + 1}'>
-			<canvas width='1000' height='500' class="canvas-write"></canvas>
 			<canvas width='1000' height='500' v-for="layer in rooms.type" :class="['canvas-shadow-' + layer]"></canvas>
+			<canvas width='1000' height='500' class="canvas-write"></canvas>
+			<canvas width='1000' height='500' class="canvas-shape"></canvas>
+			<canvas width='1000' height='500' class="canvas-image"></canvas>
 		</div>
 
 	</div>
@@ -43,15 +45,19 @@
 				for (let i = 0; i < _drawData.length; i++) {
 					if (_drawData[i].data.length) { //若绘制的时候
 						shadowFreeDraw({ //绘制阴影层
-							canvas : _canvasData.context[0][_usersData.order[_drawData[i].uid]],
-							data : _drawData[i].data
+							canvas : _canvasData.context[0][i],
+							data : _drawData[i].data,
+							i : i
 						})
 					} else {
 						if (_drawData[i].uid) {
+							// console.log('看看绘制',i, _usersData.order[_drawData[i].uid], this.$store.getters.getRoomData.type)
 							shadowToCanvas({
-								canvas : self.$el.children[0].children[_usersData.order[_drawData[i].uid]],
-								write : _canvasData.context[0][2]
+								canvas : self.$el.children[0].children[i],
+								write : _canvasData.context[0][this.$store.getters.getRoomData.type]
 							});
+						} else {
+							console.log('这是undefined', _drawData[i].uid, _drawData[i]);
 						}
 						
 					}
@@ -67,6 +73,13 @@
 
 			//教室数据
 			rooms () {
+				let self = this;
+				setTimeout(function () { //先要改变dom结构 再canvas
+					self.$store.dispatch('setCanvasContext', {
+						context : domToCanvas(self)
+					});
+				}, 0)
+				
 				return this.$store.getters.getRoomData;
 			}
 			

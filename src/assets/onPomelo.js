@@ -32,6 +32,9 @@ function onPomelo(Vue) {
 				type : 'add'
 			})
 		}
+
+		console.log(_vue.$store.getters.getUsersData)
+
 	})
 
     pomelo.on('room.fabric_push', function (data) {

@@ -22,6 +22,7 @@ const mutations = {
 	//绘制结束
 	FINISH_DRAW (state, data) {
 		state.draw[state.users.order[data.uid]].flag = false;
+		state.draw[state.users.order[data.uid]].isDraw = false;
 	},
 
 	//缓存canvas的上下文对象 
@@ -44,17 +45,17 @@ const mutations = {
 
 	//设置房间类型等信息与初始化画板数据的长度
 	SET_ROOMINFO (state, data) {
-		Object.keys(data).map((i,v) => {
-			state.room[i] = data[i];
+		Vue.set(state, 'room', {
+			type : Number(data.type), //房间类型,
+			courseId  : data.courseId, //房间号
+			server : data.server, //服务器类型
+			client : data.client //访问客户端
 		})
-		state.room.type = Number(state.room.type);
 		for (let i = 0 ; i < state.room.type; i++) {
-			state.draw[i] = {
-				flag : false,
-				isDraw : false,
-				data : [],
-				uid : undefined
-			}
+			state.draw[i] = state.draw[i] || {};
+			state.draw[i].flag = false;
+			state.draw[i].isDraw = false;
+			state.draw[i].data = [];
 		}
 	},
 
@@ -80,6 +81,7 @@ const mutations = {
 			//用戶自己，排第一個
 			if (data.uid === state.user.uid) { 
 				state.users.order[data.uid] = 0;
+				state.draw[state.users.order[data.uid]].uid = data.uid;
 			} else {
 				let _tpmIndex = 0;
 				Object.keys(state.users.order).map((i, v) => {
@@ -91,6 +93,7 @@ const mutations = {
 					}
 				})
 				state.users.order[data.uid] = _tpmIndex;
+				state.draw[state.users.order[data.uid]].uid = data.uid;
 
 			}
 		} else if (data.type == 'remove') { //減少

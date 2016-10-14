@@ -30,7 +30,6 @@ export const domToCanvas = (self) => {
  * @return {[type]}      [description]
  */
 export const shadowFreeDraw = (data) => {
-
 	let _canvas = data.canvas;
 	let _data = data.data;
 	if (!_canvas || !_data.length) return;
